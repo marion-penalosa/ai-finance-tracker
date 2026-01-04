@@ -1,0 +1,33 @@
+#spring.application.name=transaction-service
+
+
+spring:
+  application:
+    name: transaction-service
+  config:
+    import: optional:configserver:http://localhost:8888
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/fins_transactions
+#      database: fins_transactions
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#
+#server:
+#  port: 8082
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#
+#rabbitmq:
+#  exchange:
+#    name: finance.exchange
+#  queue:
+#    name: transaction.queue
+#  routing:
+#    key: transaction.creation

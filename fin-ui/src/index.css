@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root{
+  --backgroundLightMode: #eff3f4;
+  --foregroundLightMode: #093049;
+
+  --backgroundDarkMode: #093049;
+  --foregroundDarkMode: #eff3f4;
+
+  --azureDark: #093049;
+  --azurePrimary: #015f7a;
+  --cyanDark: #03a0a9;
+  --cyanPrimary: #03e3d8;
+  --turtoiseLight: #5ae8dc; 
+}
+
+@theme{
+  --color-primary: var(--azurePrimary);
+  --color-azureDark: var(--azureDark);
+  --color-cyanDark: var(--cyanDark);
+  --color-cyanPrimary: var(--cyanPrimary);
+  --color-turtoiseLight: var(--turtoiseLight);
+  
+}
+
+body{
+  background: var(--backgroundLightMode);
+  color: var(--foregroundLightMode);
+}
