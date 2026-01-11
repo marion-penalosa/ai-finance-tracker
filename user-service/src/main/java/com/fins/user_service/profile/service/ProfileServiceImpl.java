@@ -4,6 +4,7 @@ import com.fins.user_service.account.model.Account;
 import com.fins.user_service.account.repository.AccountRepository;
 import com.fins.user_service.profile.dtos.ProfileReq;
 import com.fins.user_service.profile.dtos.ProfileRes;
+import com.fins.user_service.profile.dtos.UpdateProfileReq;
 import com.fins.user_service.profile.mapper.ProfileMapper;
 import com.fins.user_service.profile.model.Profile;
 import com.fins.user_service.profile.repository.ProfileRepository;
@@ -33,8 +34,15 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override
-    public ProfileRes updateProfile(ProfileReq req) {
-        return null;
+    public ProfileRes updateProfile(String id, UpdateProfileReq req) {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        profileMapper.updateEntityFromRequest(req, profile);
+
+        Profile updated = profileRepository.save(profile);
+
+        return profileMapper.toResponse(updated);
     }
 
     @Override

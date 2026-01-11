@@ -2,6 +2,7 @@ package com.fins.user_service.profile.service;
 
 import com.fins.user_service.profile.dtos.ProfileReq;
 import com.fins.user_service.profile.dtos.ProfileRes;
+import com.fins.user_service.profile.dtos.UpdateProfileReq;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public interface ProfileService {
 
     ProfileRes createProfile(ProfileReq req);
-    ProfileRes updateProfile(ProfileReq req);
+    ProfileRes updateProfile(String id, UpdateProfileReq req);
     Page<ProfileRes> getAllProfile(Pageable pageable);
     Optional<ProfileRes> getProfileById(String id);
     void deleteProfile(String id);

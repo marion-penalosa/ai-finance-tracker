@@ -52,20 +52,7 @@ public class TransactionServiceImpl implements TransactionService{
         transaction.setCategory(req.getCategory().toLowerCase());
         Transaction saved = transactionRepository.save(transaction);
 
-        BigDecimal currentBalance = tranAccount.getBalance();
-        BigDecimal transactionAmount = transaction.getAmount();
-
-        BigDecimal updatedBalance = BigDecimal.ZERO;
-
-        if(saved.getType() == TransactionType.DEBIT && transactionAmount.compareTo(currentBalance) <= 0){
-            updatedBalance = currentBalance.subtract(transactionAmount);
-            tranAccount.setBalance(updatedBalance);
-        }else if (saved.getType() == TransactionType.CREDIT){
-            updatedBalance = currentBalance.add(transactionAmount);
-            tranAccount.setBalance(updatedBalance);
-        }
-
-        tranAccountRepository.save(tranAccount);
+        updateTranAccountBalance(transaction, saved, tranAccount);
 
         //Publish to RabbitMQ for AI Processing
         try{
@@ -75,6 +62,17 @@ public class TransactionServiceImpl implements TransactionService{
         }
 
         return transactionMapper.toResponse(saved);
+    }
+
+    @Override
+    public TransactionRes updateTransaction(String id, TransactionReq req) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+
+        transactionMapper.updateEntityFromRequest(req, transaction);
+
+        Transaction updated = transactionRepository.save(transaction);
+        return transactionMapper.toResponse(updated);
     }
 
     @Override
@@ -93,5 +91,22 @@ public class TransactionServiceImpl implements TransactionService{
     public Page<TransactionRes> getTransactionBetween(String tranAccId, LocalDateTime from, LocalDateTime to, Pageable pageable) {
         return transactionRepository.findByTranAccIdAndTransactionDateBetweenOrderByTransactionDateAsc(tranAccId, from, to, pageable)
                 .map(transactionMapper::toResponse);
+    }
+
+    private void updateTranAccountBalance(Transaction transaction, Transaction saved, TranAccount tranAccount){
+        BigDecimal currentBalance = tranAccount.getBalance();
+        BigDecimal transactionAmount = transaction.getAmount();
+
+        BigDecimal updatedBalance = BigDecimal.ZERO;
+
+        if(saved.getType() == TransactionType.DEBIT && transactionAmount.compareTo(currentBalance) <= 0){
+            updatedBalance = currentBalance.subtract(transactionAmount);
+            tranAccount.setBalance(updatedBalance);
+        }else if (saved.getType() == TransactionType.CREDIT){
+            updatedBalance = currentBalance.add(transactionAmount);
+            tranAccount.setBalance(updatedBalance);
+        }
+
+        tranAccountRepository.save(tranAccount);
     }
 }

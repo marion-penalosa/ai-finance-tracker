@@ -5,6 +5,7 @@ import com.fins.transaction_service.transaction.dtos.TransactionRes;
 import com.fins.transaction_service.transaction.model.Transaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
@@ -13,4 +14,8 @@ public interface TransactionMapper {
     Transaction toEntity(TransactionReq req);
 
     TransactionRes toResponse(Transaction transaction);
+
+    @Mapping(target = "id", ignore = true)
+    void updateEntityFromRequest(TransactionReq req, @MappingTarget Transaction transaction);
+
 }

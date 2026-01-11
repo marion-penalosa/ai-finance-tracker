@@ -1,16 +1,28 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { login } from "../../api/auth.api";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    localStorage.setItem("token","someValue");
-    navigate("/");
+    try {
+      const data = await login({ email, password });
+
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    } catch (err: any) {
+      setError(err.message || "Login failed");
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,12 +73,15 @@ const LoginPage = () => {
               />
             </div>
 
+            {error && <p className="text-red-400 text-sm">{error}</p>}
+
             {/* Submit Button */}
             <button
               type="submit"
+              disabled={loading}
               className="bg-primary rounded-2xl p-3 text-white font-bold hover:bg-cyanDark transition-all mt-4"
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
 

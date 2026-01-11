@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface TransactionService {
     TransactionRes createTransaction(TransactionReq req);
+    TransactionRes updateTransaction(String id, TransactionReq req);
     Page<TransactionRes> getAllTransactions(Pageable pageable);
     Optional<TransactionRes> getTransactionById(String id);
     Page<TransactionRes> getTransactionBetween(String tranAccId, LocalDateTime from, LocalDateTime to, Pageable pageable);

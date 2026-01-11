@@ -2,6 +2,7 @@ package com.fins.user_service.profile.controller;
 
 import com.fins.user_service.profile.dtos.ProfileReq;
 import com.fins.user_service.profile.dtos.ProfileRes;
+import com.fins.user_service.profile.dtos.UpdateProfileReq;
 import com.fins.user_service.profile.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,14 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
-    //update profile info only
-    //update profile pic
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfileRes> updateProfile(
+            @PathVariable String id,
+            @Valid @RequestBody UpdateProfileReq req
+            ){
+        ProfileRes response = profileService.updateProfile(id, req);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping
     public ResponseEntity<Page<ProfileRes>> getAllProfiles(Pageable pageable){

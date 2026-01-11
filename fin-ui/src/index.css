@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root{
+:root {
   --backgroundLightMode: #eff3f4;
   --foregroundLightMode: #093049;
 
@@ -11,19 +11,20 @@
   --azurePrimary: #015f7a;
   --cyanDark: #03a0a9;
   --cyanPrimary: #03e3d8;
-  --turtoiseLight: #5ae8dc; 
+  --turtoiseLight: #5ae8dc;
 }
 
-@theme{
+@theme {
   --color-primary: var(--azurePrimary);
   --color-azureDark: var(--azureDark);
   --color-cyanDark: var(--cyanDark);
   --color-cyanPrimary: var(--cyanPrimary);
   --color-turtoiseLight: var(--turtoiseLight);
-  
+
 }
 
-body{
+body {
   background: var(--backgroundLightMode);
   color: var(--foregroundLightMode);
+  padding: 0
 }
